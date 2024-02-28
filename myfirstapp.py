@@ -3,10 +3,10 @@ import numpy as np
 import pandas as pd
 import time
 
-st.header("My first Streamlit App")
+st.header("Sales")
 
 option = st.sidebar.selectbox(
-    'Select a mini project',
+    'Select a product',
      ['line chart','map','T n C','Long Process'])
 
 if option=='line chart':
