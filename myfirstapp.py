@@ -1,46 +1,38 @@
+%%writefile sales.py
 import streamlit as st
-import numpy as np
 import pandas as pd
-import time
+import pickle
 
-st.header("Sales")
+#pickle pickle function in Python helps you save Python objects (like lists, dictionaries, or custom-made objects) into files, 
+#and later load those files to get back the original objects.
 
-option = st.sidebar.selectbox(
-    'Select a product',
-     ['line chart','map','T n C','Long Process'])
+st.write("""
+# Iris Flower Prediction App
 
-if option=='line chart':
-    chart_data = pd.DataFrame(
-    np.random.randn(20, 3),
-    columns=['a', 'b', 'c'])
+This app wants to know the **Sales** of each product!
+""")
 
-    st.line_chart(chart_data)
+st.sidebar.header('User Input Parameters') #inside sidebar, function we select is
 
-elif option=='map':
-    map_data = pd.DataFrame(
-    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-    columns=['lat', 'lon'])
+def user_input_features():
+    TV = st.sidebar.slider('TV', 0.7, 297, 100)
+    Radio = st.sidebar.slider('Radio', 0, 50, 15)
+    Newspaper = st.sidebar.slider('Newspaper', 0.3, 114, 20)
+    data = {'TV': TV,
+            'Radio': Radio,
+            'Newspaper': Newspaper}
 
-    st.map(map_data)
+    features = pd.DataFrame(data, index=[0])
+    return features
 
-elif option=='T n C':
-    st.write('Before you continue, please read the [terms and conditions](https://www.gnu.org/licenses/gpl-3.0.en.html)')
-    show = st.checkbox('I agree the terms and conditions')
-    if show:
-        st.write(pd.DataFrame({
-        'Intplan': ['yes', 'yes', 'yes', 'no'],
-        'Churn Status': [0, 0, 0, 1]
-        }))
+df = user_input_features()
 
-else:
-    'Starting a long computation...'
+st.subheader('User Input parameters') #headler - title #subheader - sub title
+st.write(df) #display
 
-    latest_iteration = st.empty()
-    bar = st.progress(0)
+loaded_model = pickle.load(open("", "rb"))   #iris_model - 
 
-    for i in range(100):
-        latest_iteration.text(f'Iteration {i+1}')
-        bar.progress(i + 1)
-        time.sleep(0.1)
+prediction = loaded_model.predict(df)
 
-    '...and now we\'re done!'
+st.subheader('Prediction')
+st.write(prediction)
